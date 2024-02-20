@@ -1,0 +1,16 @@
+services:
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: redis
+    hostname: redis
+    networks:
+      - server
+    ports:
+      - 6379:6379
+    volumes:
+      - ./configs/redis/redis.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+
+networks:
+  server:
+    driver: bridge

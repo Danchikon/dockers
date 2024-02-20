@@ -1,0 +1,14 @@
+services:
+  centrifugo:
+    image: centrifugo/centrifugo:v5.2.2
+    container_name: centrifugo
+    hostname: centrifugo
+    networks:
+      - server
+    command: centrifugo -c /etc/centrifugo/config.json
+    volumes:
+      - ./configs/centrifugo/centrifugo.json:/etc/centrifugo/config.json:ro
+
+networks:
+  server:
+    driver: bridge

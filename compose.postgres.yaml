@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16.1-alpine
+    container_name: postgres
+    hostname: postgres
+    networks:
+      - server
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: auction
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./configs/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./configs/postgres/scripts:/docker-entrypoint-initdb.d:ro
+      - postgres_data:/var/lib/postgresql/data
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    healthcheck:
+      test: [ CMD, pg_isready, -U, $POSTGRES_USER, -d, auction ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
+
+networks:
+  server:
+    driver: bridge

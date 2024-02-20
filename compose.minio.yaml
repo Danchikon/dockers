@@ -1,0 +1,24 @@
+services:
+  minio:
+    image: bitnami/minio:2024.2.4
+    container_name: minio
+    hostname: minio
+    networks:
+      - server
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: $MINIO_ROOT_USER
+      MINIO_ROOT_PASSWORD: $MINIO_ROOT_PASSWORD
+      MINIO_SCHEME: http
+      MINIO_SERVER_URL: http://127.0.0.1:9000
+    volumes:
+      - minio_data:/bitnami/minio/data
+
+volumes:
+  minio_data:
+
+networks:
+  server:
+    driver: bridge
