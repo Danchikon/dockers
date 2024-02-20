@@ -5,6 +5,8 @@ services:
     hostname: centrifugo
     networks:
       - server
+    ports:
+      - 8000:8000
     command: centrifugo -c /etc/centrifugo/config.json
     volumes:
       - ./configs/centrifugo/centrifugo.json:/etc/centrifugo/config.json:ro
