@@ -15,6 +15,7 @@ services:
       MINIO_SERVER_URL: http://127.0.0.1:9000
     volumes:
       - minio_data:/bitnami/minio/data
+    restart: on-failure
 
 volumes:
   minio_data:

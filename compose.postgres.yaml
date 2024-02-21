@@ -17,6 +17,7 @@ services:
       - ./configs/postgres/scripts:/docker-entrypoint-initdb.d:ro
       - postgres_data:/var/lib/postgresql/data
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    restart: on-failure
     healthcheck:
       test: [ CMD, pg_isready, -U, $POSTGRES_USER, -d, auction ]
       interval: 15s
