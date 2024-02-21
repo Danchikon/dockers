@@ -1,5 +1,5 @@
 services:
-  zookeeper:
+  pulsar-zookeeper:
     image: apachepulsar/pulsar:3.2.0
     container_name: pulsar-zookeeper
     hostname: pulsar-zookeeper
@@ -23,7 +23,7 @@ services:
       timeout: 5s
       retries: 30
 
-  bookkeeper:
+  pulsar-bookkeeper:
     image: apachepulsar/pulsar:3.2.0
     container_name: pulsar-bookkeeper
     hostname: pulsar-bookkeeper
@@ -47,7 +47,7 @@ services:
     command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf && exec bin/pulsar bookie"
     restart: on-failure
 
-  broker:
+  pulsar-broker:
     image: apachepulsar/pulsar:3.2.0
     container_name: pulsar-broker
     hostname: pulsar-broker
@@ -57,8 +57,8 @@ services:
       - 6650:6650
       - 8080:8080
     environment:
-      metadataStoreUrl: zk:zookeeper:2181
-      zookeeperServers: zookeeper:2181
+      metadataStoreUrl: zk:pulsar-zookeeper:2181
+      zookeeperServers: pulsar-zookeeper:2181
       clusterName: cluster-a
       managedLedgerDefaultEnsembleSize: 1
       managedLedgerDefaultWriteQuorum: 1
@@ -74,7 +74,7 @@ services:
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf && exec bin/pulsar broker"
     restart: on-failure
 
-  manager:
+  pulsar-manager:
     image: apachepulsar/pulsar-manager:v0.3.0
     container_name: pulsar-manager
     hostname: pulsar-manager
@@ -90,7 +90,7 @@ services:
         condition: service_started
     restart: on-failure
   
-  init:
+  pulsar-init:
     image: apachepulsar/pulsar:3.2.0
     container_name: pulsar-init
     hostname: pulsar-init
